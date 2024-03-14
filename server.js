@@ -7,6 +7,7 @@ import connectDB from "./utils/dbConfig.js"
 import { uShareBundlesRouter } from "./routes/uShareBundlesRoutes.js";
 import { rechargeCardRouter } from "./routes/rechargeCardRoutes.js";
 import { accessoriesRouter } from "./routes/accessoriesRoutes.js";
+import { userRouter } from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -26,8 +27,9 @@ app.use(
 app.use(express.static("images"));
 
 app.use('/uShareBundles',  uShareBundlesRouter);
-app.use("/rechargeCards", rechargeCardRouter)
-app.use("/accessories", accessoriesRouter)
+app.use("/rechargeCards", rechargeCardRouter);
+app.use("/accessories", accessoriesRouter);
+app.use("/users", userRouter);
 
 const port = process.env.PORT || 5000
   
