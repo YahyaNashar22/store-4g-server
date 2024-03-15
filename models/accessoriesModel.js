@@ -25,7 +25,7 @@ const accessoriesModelSchema = new mongoose.Schema(
       },
       quantity:{
         type:Number,
-        required:true
+        required:false
       },
     slug: {
         type: String,

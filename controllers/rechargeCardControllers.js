@@ -105,3 +105,13 @@ export const oneCard = async(req,res)=>{
         res.status(500).json({message: e.message})
     }
 }
+
+export const getCardsByCarrier = async(req,res)=>{
+    try{
+        const {carrier} = req.body;
+        const cards = await rechargeCardSchema.find({carrier: carrier});
+        res.status(201).json({message:`Cards for ${carrier} fetched`, payload:cards})
+    } catch(e) {
+        res.status(500).json({message: e.message})
+    }
+}

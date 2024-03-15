@@ -90,9 +90,16 @@ export const deleteAccessory = async(req,res)=>{
 }
 
 export const getAllAccessories = async(req,res)=>{
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
     try{
-        const accessories = await accessoriesSchema.find();
-        res.status(201).json({message:"Accessories fetched successfully!", payload:accessories})
+        const accessories = await accessoriesSchema.find().skip(skip).limit(limit).exec();
+        const count = await accessoriesSchema.find().countDocuments();
+        if(!accessories || accessories.length===0){
+            res.status(404).json("No More Accessories !")
+        }
+        res.status(201).json({message:"Accessories fetched successfully!", payload:accessories, count:count})
     } catch(e) {
         res.status(500).json({message: e.message})
     }
@@ -105,5 +112,23 @@ export const oneAccessory = async(req,res)=>{
         res.status(201).json({message:"Accessory Fetched", payload:accessory})
     } catch(e) {
         res.status(500).json({message: e.message})
+    }
+}
+
+export const searchAccessories = async(req,res)=>{
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+    const { search } = req.body;
+    const searchRegex = new RegExp(search, "i");
+    try{
+        const accessories = await accessoriesSchema.find({$or:[{name:searchRegex}, {brand:searchRegex}, {category:searchRegex}]}).skip(skip).limit(limit).exec()
+        const count = await accessoriesSchema.find({$or:[{name:searchRegex}, {brand:searchRegex}, {category:searchRegex}]}).countDocuments();
+        if(!accessories || accessories.length===0){
+            res.status(404).json("No More Accessories !")
+        }
+        res.status(201).json({message:"Accessory Fetched", payload:accessories, count:count})
+    } catch(e) {
+        
     }
 }
