@@ -31,9 +31,8 @@ export const createCard = async(req,res) =>{
 }
 
 export const editCard = async(req,res)=>{
-    const slug = req.params.slug;
     try{
-        const {name, price, carrier} = req.body;
+        const {name, price, carrier, slug} = req.body;
         const editedCard = await rechargeCardSchema.findOneAndUpdate(
             {slug:slug},
             {$set:{name, price, carrier}},
@@ -49,20 +48,20 @@ export const editCard = async(req,res)=>{
 }
 
 export const editCardPicture = async(req,res)=>{
-    const slug = req.params.slug;
     try{
+        const {id} = req.body;
         const image = req.file.filename;
-        const card = await rechargeCardSchema.findOne({slug:slug});
+        const card = await rechargeCardSchema.findOne({_id:id});
         if (card.picture){
             removeImage(card.picture);
         }
         const editedCard = await rechargeCardSchema.findOneAndUpdate(
-            {slug:slug},
-            {set:{picture:image}},
+            {_id:id},
+            {$set:{picture:image}},
             {new:true}
         )
         if(!editedCard){
-            return res.status(404).json({message:"couldn't card !"})
+            return res.status(404).json({message:"couldn't find card !"})
         }
         res.status(201).json({message:"edited successfully!", payload:editedCard})
     } catch(e) {
@@ -71,17 +70,19 @@ export const editCardPicture = async(req,res)=>{
 }
 
 export const deleteCard = async(req,res)=>{
-    const slug = req.params.slug;
+    const {id} = req.body;
+    console.log(req.body)
+    console.log(id)
     try{
-        const card = await rechargeCardSchema.findOne({slug:slug});
+        const card = await rechargeCardSchema.findOne({_id:id});
         if(card.picture){
             removeImage(card.picture);
         }
-        const deltedCard = await rechargeCardSchema.findOneAndDelete({slug:slug})
-        if(!deltedCard){
+        const deletedCard = await rechargeCardSchema.findOneAndDelete({_id:id})
+        if(!deletedCard){
             return res.status(404).json("card not found !")
         }
-        res.status(201).json({message:`${deleteCard.name} deleted successfully`})
+        res.status(201).json({message:`${deletedCard.name} deleted successfully`})
     } catch(e) {
         res.status(500).json({message: e.message})
     }

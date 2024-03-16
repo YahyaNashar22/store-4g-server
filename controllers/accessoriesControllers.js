@@ -124,9 +124,6 @@ export const searchAccessories = async(req,res)=>{
     try{
         const accessories = await accessoriesSchema.find({$or:[{name:searchRegex}, {brand:searchRegex}, {category:searchRegex}]}).skip(skip).limit(limit).exec()
         const count = await accessoriesSchema.find({$or:[{name:searchRegex}, {brand:searchRegex}, {category:searchRegex}]}).countDocuments();
-        if(!accessories || accessories.length===0){
-            res.status(404).json("No More Accessories !")
-        }
         res.status(201).json({message:"Accessory Fetched", payload:accessories, count:count})
     } catch(e) {
         

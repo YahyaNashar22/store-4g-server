@@ -6,8 +6,8 @@ export const rechargeCardRouter = express.Router();
 
 rechargeCardRouter.post("/create",upload.single('image'), createCard )
 rechargeCardRouter.post('/cardsbycarrier', getCardsByCarrier)
-rechargeCardRouter.put("/edit/:slug", editCard )
-rechargeCardRouter.put("/editpictrue/:slug",upload.single('image'), editCardPicture )
-rechargeCardRouter.delete("/delete/:slug", deleteCard )
+rechargeCardRouter.put("/edit", editCard )
+rechargeCardRouter.put("/editpicture",upload.single('image'), editCardPicture )
+rechargeCardRouter.delete("/delete", deleteCard )
 rechargeCardRouter.get("/get", getAllCards )
 rechargeCardRouter.put("/get/:slug", oneCard )
