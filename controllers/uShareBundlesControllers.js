@@ -14,11 +14,10 @@ export const createBundle = async (req,res) =>{
 }
 
 export const editBundle = async (req,res)=>{
-    const slug = req.params.slug
     try{
-        const { name, price} = req.body;
-        const editedBundle = await uShareBundlesSchema.findOne(
-            {slug:slug},
+        const { name, price, id} = req.body;
+        const editedBundle = await uShareBundlesSchema.findOneAndUpdate(
+            {_id:id},
             {$set:{name,price}} ,
             {new:true}
             );
@@ -29,9 +28,9 @@ export const editBundle = async (req,res)=>{
 }
 
 export const deleteBundle = async (req,res)=>{
-    const slug = req.params.slug
+    const {id} = req.body;
     try{
-       const deletedBundle = await uShareBundlesSchema.findOneAndDelete({slug:slug})
+       const deletedBundle = await uShareBundlesSchema.findOneAndDelete({_id:id})
         if(!deletedBundle){
             return res.status(404).json("This Bundle is not available.")
         }
