@@ -6,8 +6,8 @@ export const accessoriesRouter = express.Router();
 
 accessoriesRouter.post("/create",upload.single('image'), createAccessory )
 accessoriesRouter.post("/search", searchAccessories)
-accessoriesRouter.put("/edit/:slug", editAccessory )
-accessoriesRouter.put("/editpicture/:slug",upload.single('image'), editAccessoryPicture )
-accessoriesRouter.delete("/delete/:slug", deleteAccessory )
+accessoriesRouter.put("/edit", editAccessory )
+accessoriesRouter.put("/editpicture",upload.single('image'), editAccessoryPicture )
+accessoriesRouter.delete("/delete", deleteAccessory )
 accessoriesRouter.get("/get", getAllAccessories )
 accessoriesRouter.get("/get/:slug", oneAccessory )

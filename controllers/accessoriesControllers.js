@@ -16,7 +16,6 @@ export const createAccessory = async(req,res) =>{
     try{
         const image = req.file.filename;
         const {name, price, category, brand, quantity} = req.body;
-        
         const newAccessory = new accessoriesSchema({
             name,
             price,
@@ -33,11 +32,10 @@ export const createAccessory = async(req,res) =>{
 }
 
 export const editAccessory = async(req,res)=>{
-    const slug = req.params.slug;
     try{
-        const {name, price, category, brand, quantity} = req.body;
+        const {id,name, price, category, brand, quantity} = req.body;
         const editedAccessory = await accessoriesSchema.findOneAndUpdate(
-            {slug:slug},
+            {_id:id},
             {$set:{name, price, category, brand, quantity}},
             {new:true}
         );
@@ -51,15 +49,15 @@ export const editAccessory = async(req,res)=>{
 }
 
 export const editAccessoryPicture = async(req,res)=>{
-    const slug = req.params.slug;
     try{
+        const {id} = req.body;
         const image = req.file.filename;
-        const accessory = await accessoriesSchema.findOne({slug:slug});
+        const accessory = await accessoriesSchema.findOne({_id:id});
         if (accessory.picture){
             removeImage(accessory.picture);
         }
         const editedAccessory = await accessoriesSchema.findOneAndUpdate(
-            {slug:slug},
+            {_id:id},
             {$set:{picture:image}},
             {new:true}
         )
@@ -73,13 +71,13 @@ export const editAccessoryPicture = async(req,res)=>{
 }
 
 export const deleteAccessory = async(req,res)=>{
-    const slug = req.params.slug;
+    const {id} = req.body;
     try{
-        const accessory = await accessoriesSchema.findOne({slug:slug});
+        const accessory = await accessoriesSchema.findOne({_id:id});
         if(accessory.picture){
             removeImage(accessory.picture);
         }
-        const deltedAccessory = await accessoriesSchema.findOneAndDelete({slug:slug})
+        const deltedAccessory = await accessoriesSchema.findOneAndDelete({_id:id})
         if(!deltedAccessory){
             return res.status(404).json("accessory not found !")
         }
