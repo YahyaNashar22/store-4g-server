@@ -5,13 +5,14 @@ import { createToken, verifyToken } from "../utils/token.js";
 //Sign up
 export const signup = async (req,res) =>{
     try{
-      const { email, name, password } = req.body;
+      const { email, name, password, role } = req.body;
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(password, salt);
       const newUser =  new userSchema({
         name,
         password:hash,
-        email
+        email,
+        role:role?role:"user"
       });
       await newUser.save();
       const token = createToken(newUser);
@@ -167,7 +168,7 @@ export const getOne = async (req, res) => {
     const id = decoded.data?.id;
     try {
       if (!id) {
-        return res.status(400).json({ error: "No Token!" });
+        return res.status(206).json({ error: "No Token!" });
       }
       const user = await userSchema.findById(id);
       if (user) {

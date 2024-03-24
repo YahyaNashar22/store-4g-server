@@ -14,5 +14,5 @@ userRouter.post('/checkpassword', checkPassword);
 userRouter.put('/changerole/:slug', changeRole);
 userRouter.delete('/delete/:slug', deleteUser);
 userRouter.get('/get', getAllUsers);
-userRouter.post('/getone', getOne);
+userRouter.get('/getone', getOne);
 userRouter.post('/get/:slug', getOneUser);
