@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
     cors({
-      origin: ["http://localhost:3000","store-4g-client.vercel.app","https://store-4g-client.vercel.app/accessories"],
+      origin: ["http://localhost:3000","store-4g-client.vercel.app","https://store-4g-client.vercel.app/accessories", "https://store-4g-client.vercel.app"],
       credentials: true,
       optionsSuccessStatus: 200,
     })
