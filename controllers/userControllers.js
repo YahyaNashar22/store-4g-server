@@ -165,10 +165,11 @@ export const getOneUser = async (req,res)=>{
 export const getOne = async (req, res) => {
     const token = req.cookies.userToken;
     const decoded = verifyToken(token);
-    const id = decoded.data?.id;
+    const id = decoded.data ? decoded.data.id : undefined;
+
     try {
       if (!id) {
-        return res.status(206).json({ error: "No Token!" });
+        return res.status(404).json({ error: "No Token!" });
       }
       const user = await userSchema.findById(id);
       if (user) {
